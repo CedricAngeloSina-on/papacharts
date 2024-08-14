@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +60,7 @@ const FormSchema = z.object({
     .max(10, "Please select at most ten axis."),
 });
 
-export function CSVForm() {
+export default function CSVForm() {
   const [data, setData] = useState<Record<string, unknown>[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const multiSelectOptions = useMemo(
@@ -71,6 +71,10 @@ export function CSVForm() {
       })),
     [columns],
   );
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
